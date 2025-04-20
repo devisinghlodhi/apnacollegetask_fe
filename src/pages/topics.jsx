@@ -40,23 +40,39 @@ export default function Topics() {
   }, [data])
   
 
-  const handleToggle = (category) => {
-    setExpandedCategory(expandedCategory === category ? null : category);
-  };
+  const handleUpdateStatus = async (id, isDone, level)=>{
+    try {
+      const response = await axios.post('/api/updatetopic', {
+        topicId: id,
+        isDone,
+        level
+      });
+     
+    } catch (error) {
+      console.error('Error fetching progress:', error);
+    } 
+  }
+ 
 
   const handleToggleCheckBox = (e)=>{
     const type = e.target.getAttribute('data-type');
     if(type === 'click-to-checkbox'){
       const id = e.target.getAttribute('data-id');
+      const level = e.target.getAttribute('data-level');
       let updateTopics = data.map((item)=>{
         if(item.id == id){
           item.status = (item?.status == true) ? false : true;
+          handleUpdateStatus(id, item?.status, level)
         }
         return item;
       })
       setData(updateTopics)
     }
   }
+
+  const handleToggle = (category) => {
+    setExpandedCategory(expandedCategory === category ? null : category);
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-6" onClick={handleToggleCheckBox}>
@@ -101,7 +117,10 @@ export default function Topics() {
                 <tbody>
                   {groupedData[category].map((topic) => (
                     <tr key={topic.id} className="border-b hover:bg-gray-100">
-                      <td className="py-2 px-4"><input type="checkbox" className='me-2' data-type="click-to-checkbox" data-id={topic?.id} id={`check-id-${topic?.id}`} /> <label htmlFor={`check-id-${topic?.id}`}>{topic.name}</label></td>
+                      <td className="py-2 px-4">
+                      <input type="checkbox" defaultChecked={topic?.status ? 'checked' : ''} className='me-2' data-type="click-to-checkbox" data-level={topic?.level} data-id={topic?.id} id={`check-id-${topic?.id}`} /> 
+                      <label htmlFor={`check-id-${topic?.id}`}>{topic.name}</label>
+                      </td>
                       <td className="py-2 px-4">
                         <a href={topic.leetcode_link} target="_blank" className="text-blue-500">
                           Leetcode
