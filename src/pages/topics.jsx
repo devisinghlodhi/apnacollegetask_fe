@@ -70,6 +70,10 @@ export default function Topics() {
     }
   }
 
+  const getCategoryStatus = (items) => {
+    return items.find((item)=> !!item?.status == false) ? true : false;
+  }
+
   const handleToggle = (category) => {
     setExpandedCategory(expandedCategory === category ? null : category);
   };
@@ -87,7 +91,21 @@ export default function Topics() {
               className="cursor-pointer bg-gray-800 text-white py-3 px-4 rounded-lg flex justify-between items-center"
               onClick={() => handleToggle(category)}
             >
-              <h2 className="text-xl">{category}</h2>
+              <h2 className="text-xl">{category}  {
+                getCategoryStatus(groupedData[category]) 
+                ? <span className="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-2xl shadow-sm bg-amber-100 text-amber-700 ring-1 ring-amber-300">
+                    <span className="w-2 h-2 rounded-full bg-current opacity-70"></span>
+                    Pending
+                  </span>
+
+                :  <span className="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-2xl shadow-sm bg-emerald-100 text-emerald-700 ring-1 ring-emerald-300">
+                    <span className="w-2 h-2 rounded-full bg-current opacity-70"></span>
+                    Done
+                  </span>
+
+              }</h2>
+             
+              
               <span
                 className={`transform transition-transform duration-300 ease-in-out ${
                   expandedCategory === category ? 'rotate-180' : ''
