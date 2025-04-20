@@ -1,4 +1,6 @@
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
+import { useSelector } from 'react-redux';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const useAxios = () => {
@@ -14,7 +16,7 @@ const useAxios = () => {
       config.headers["Content-Type"] = "application/json";
       config.headers["token"] = token;
       config.headers["Authorization"] = `Bearer ${token}`;
-      config.withCredentials = true;
+      // config.withCredentials = true;
 
       // SENT DEFAULT PARAMS TO GET API :
       if (config.method === "get") {
