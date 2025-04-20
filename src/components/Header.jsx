@@ -1,16 +1,18 @@
 import React from 'react';
 import { FaUserAlt, FaBook, FaClipboardList, FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const Header = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleLogout = () => {
     // Add your logout logic here
-    console.log("Logging out...");
+    dispatch({type: 'logout'})
     // Redirect to login or home page
-    navigate('/login');
+    navigate('/');
   };
 
   // Dynamically change the title based on pathname
